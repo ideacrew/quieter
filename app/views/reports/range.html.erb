@@ -1,0 +1,15 @@
+<h1>Get all prs between 2 sha</h1>
+
+<%= form_with url: execute_range_report_path, data: { turbo: false } do |form|  %>
+    <%= form.label :organization %>
+    <%= form.select :organization, options_for_select(@organizations), {prompt: "Select Organization"} %>
+    <%= form.label :repo %>
+    <%= form.select :repo, options_for_select(@repos_array), {prompt: "Select Repo"} %>
+    <%= form.label :start_sha %>
+    <%= form.text_field :start_sha%>
+    <%= form.label :end_sha %>
+    <%= form.text_field :end_sha %>
+    <%= form.submit "Submit" %>
+<%end%>
+
+<%= render "partials/gh_rate" %>
