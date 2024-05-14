@@ -4,7 +4,7 @@ class ReportsController < ApplicationController
 
   def range
     @organizations = ["ideacrew", "dchbx"]
-    @repos_array = helpers.get_repos_for_select(@organizations.last)
+    @repos_array = helpers.get_repos_for_select(@organizations.first)
   end
 
   def execute_range

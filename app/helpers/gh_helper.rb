@@ -77,7 +77,7 @@ module GhHelper
       matches = ticket_section.scan(/#{prefix}\d*/)
       matches.each do |match|
         number = match.gsub(prefix, '') # [/(\d+)[^-]*$/]
-        url = item.item[:url_template]&.gsub('<num>', number)
+        url = item[:url_template]&.gsub('<num>', number)
         result << url
       end
     end
