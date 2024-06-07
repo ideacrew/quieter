@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get 'aha/explorer', as: 'aha_explorer'
+  get 'aha/initiative_explorer', as: 'execute_aha_initiative_explorer'
+
   get 'reports/home' 
   get 'reports/range', as: 'range_report'
   post 'reports/execute_range', as: 'execute_range_report'
