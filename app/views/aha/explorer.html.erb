@@ -1,0 +1,8 @@
+<h1>Aha Explorer</h1>
+
+<%= form_with url: execute_aha_initiative_explorer_path, method: :get do |form|  %>
+    <%= form.label :initiative_id %>
+    <%= form.text_field :initiative_id, value: "IVL-S-325" %>
+    <%= form.submit "Submit" %>
+<%end%>
+

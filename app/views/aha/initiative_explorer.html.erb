@@ -1,0 +1,84 @@
+<div class="container adjust">
+    <section class="section">
+    <span class="subtitle is-italic">Initiative name</span>
+    <h1 class="title">
+     <%= @initiative["name"] %> - <a href="<%= @initiative["url"]%>" target="_blank"> <%= @initiative["reference_num"] %> </a>
+    </h1>
+    <br />
+    <span class="subtitle is-italic">Initiative description</span>
+    </section>
+    <div class="content box">
+        <%= raw(@initiative["description"]["body"]) %>
+    </div>
+
+    <section class="section">
+    <h1 class="title">Features</h1>
+    </section>
+
+    <% @initiative["features"].each_with_index do |feature,i| %>
+        <article class="media box">
+            <figure class="media-left"> 
+                <p class="image is-64x64"> 
+                <br />
+                <br />
+                <i class="fa-solid fa-f"></i>
+                <% if i+1 >= 10 %>
+                    <% as_str = (i+1).to_s %>
+                    <i class="fa-solid fa-<%=as_str[0]%>"></i>
+                    <i class="fa-solid fa-<%=as_str[1]%>"></i>
+                <% else %>
+                    <i class="fa-solid fa-<%=i+1%>"></i>
+                <% end %>
+                </p> 
+
+            </figure> 
+
+            <div class="media-content">
+                <div class="content">
+                    <span class="is-size-5 is-italic">Feature Name</span><br />
+                    <span class="is-size-3">
+                        <%= feature["name"] %> - <a href="<%= feature["url"] %>" target="_blank"> <%= feature["reference_num"] %></a>
+                    </span>
+                    <% remote_feature = get_feature(feature["id"]) %>
+                    <br />
+                    <span class="is-size-5 is-italic">Feature Description</span><br />
+                    <p class="content"> 
+                        <%= raw(remote_feature["description"]["body"]) %>
+                    </p>
+                </div>
+                    <% if not remote_feature["requirements"].empty? %>
+                        <section class="section">
+                            <strong class="is-size-4">Requirements</strong>
+                        </section>
+                    <% end %>
+                    <% remote_feature["requirements"].each_with_index do |requirement,j| %>
+                        <article class="media">
+                            <figure class="media-left">
+                                <p class="image is-48x48">
+                                <br />
+                                <i class="fa-solid fa-registered"></i>
+                                <i class="fa-solid fa-<%=j+1%>"></i>
+                                    <!--
+                                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20200819145636/icon.png">
+                                    -->
+                                </p>
+                            </figure>
+                            <div class="media-content">
+                                <span class="is-size-7 is-italic" >Requirement Name</span> <br />
+                                <span class="is-size-5">
+                                    <%= requirement["name"] %> - <a href="<%= requirement["url"] %>" target="_blank"> <%= requirement["reference_num"] %> </a>
+                                </span>
+                                <% remote_requirement = get_requirement(requirement["id"]) %>
+                                <br />
+                                <span class="is-size-7 is-italic" >Requirement Description</span>
+                                <div class="content"> 
+                                    <%= raw(remote_requirement["description"]["body"]) %>
+                                </div>
+                            </div>
+                        </article>
+                    <% end %>
+            </div>
+
+        </article>
+    <% end %>
+</div>
