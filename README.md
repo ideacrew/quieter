@@ -8,7 +8,7 @@ get the list of PR that are related to all the commits between two sha's.
 right now is not prepared to go to production, for development, clone repo and create a .env file with the following content
 
 ```
-GITHUB_TOKEN=your_github_token
+GH_TOKEN=your_github_token
 ```
 
 then run the following commands
