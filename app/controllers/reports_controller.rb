@@ -2,16 +2,29 @@ class ReportsController < ApplicationController
   def home
   end
 
+  def repos
+    @repos_array = helpers.get_repos_for_select(params[:organization])
+    render json: {
+      repos: @repos_array.flatten.uniq,
+      github_rate: GithubService.github_rate
+    }
+  end
+
   def range
     @organizations = ["ideacrew", "dchbx"]
-    @repos_array = helpers.get_repos_for_select(@organizations.last)
+    render inertia: "reports/RangeComponent", props: { 
+      orgs: @organizations,
+      submit_url: execute_range_report_path,
+      repos_url: repos_reports_path,
+      csrf_token: form_authenticity_token,
+      github_rate: GithubService.github_rate
+    }
   end
 
   def execute_range
-    commits=helpers.get_sha_between(params[:organization],params[:repo],params[:start_sha], params[:end_sha])
-    prs = helpers.get_pr_for_sha(params[:organization],params[:repo],commits)
-    csv_string = helpers.format_pr_for_download(params[:organization],params[:repo],prs)
-    send_data csv_string, :filename => 'range_report.csv', :type => 'text/csv; charset=utf-8; header=present'
+    csv_string = CsvService.csv_for_project(params[:organization],params[:repo],params[:start_sha], params[:end_sha])
+    filename = "#{params[:organization]}_#{params[:repo]}_#{params[:start_sha]}_#{params[:end_sha]}.csv"
+    send_data csv_string, :filename => filename, :type => 'text/csv; charset=utf-8; header=present'
   end
 
   def mttm
