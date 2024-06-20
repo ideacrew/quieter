@@ -25,3 +25,4 @@ RSpec.describe GhHelper, :type => :helper do
     end
 
   end
+end

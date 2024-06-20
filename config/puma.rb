@@ -41,3 +41,8 @@ pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 
 # Allow puma to be restarted by `bin/rails restart` command.
 plugin :tmp_restart
+
+# Start the vite asset server, for great convenience
+require_relative "./vite_dev_server.puma"
+
+plugin :vite_dev_server

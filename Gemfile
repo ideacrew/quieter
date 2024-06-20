@@ -13,16 +13,17 @@ gem "sprockets-rails"
 gem "puma", "~> 5.0"
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
-gem "importmap-rails"
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
-gem "turbo-rails"
 
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
-gem "stimulus-rails"
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
+
+gem "sqlite3", "~> 1.4"
+
+gem "async"
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
@@ -70,3 +71,11 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+
+gem "inertia_rails", "~> 3.2"
+
+gem "inertia_rails-contrib", "~> 0.1.1"
+
+gem "vite_rails", "~> 3.0"
+
+gem "turbo-rails", "~> 2.0"
