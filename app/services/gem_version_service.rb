@@ -30,6 +30,7 @@ class GemVersionService
   end
 
   def extract_github_sha_from_spec(spec)
+    return spec.source.options["tag"] if spec.source.options && spec.source.options["tag"]
     spec.source.revision
   end
 
