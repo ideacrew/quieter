@@ -1,0 +1,51 @@
+AllCops:
+  TargetRubyVersion: 3.2
+  Exclude:
+    - bin/bundle
+    - config/environments/production.rb
+    - config/initializers/content_security_policy.rb
+    - config/initializers/filter_parameter_logging.rb
+    - config/initializers/inflections.rb
+    - config/puma.rb
+    - config/vite_dev_server.puma.rb
+    - db/schema.rb
+    - db/seeds.rb
+
+Bundler/OrderedGems:
+  Enabled: false
+
+Layout/SpaceInsidePercentLiteralDelimiters:
+  Exclude:
+    - Gemfile
+
+Metrics/MethodLength:
+  Max: 20
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - test/channels/application_cable/connection_test.rb
+    - test/test_helper.rb
+
+Style/Documentation:
+  Exclude:
+    - app/helpers/application_helper.rb
+    - app/mailers/application_mailer.rb
+    - app/models/application_record.rb
+    - config/application.rb
+    - db/migrate/*.rb
+    - test/application_system_test_case.rb
+    - test/controllers/**/*_test.rb
+    - test/helpers/**/*_test.rb
+    - test/test_helper.rb
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/HashSyntax:
+  Enabled: false
+
+Style/LineEndConcatenation:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: false
