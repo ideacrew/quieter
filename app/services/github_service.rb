@@ -31,6 +31,36 @@ class GithubService
     diff.commits.map { |item| { sha: item.sha, html_url: item.html_url } }
   end
 
+  def get_vulnerabilities(organization, repo)
+    okto_singleton.auto_paginate = true
+    result = []
+
+    Rails.logger.info "Getting alerts for #{organization}/#{repo}"
+
+    vulnerabilities = okto_singleton.paginate "repos/#{organization}/#{repo}/code-scanning/alerts"
+    vulnerabilities.each do |item|
+      #binding.pry
+      Rails.logger.info "Processing #{item[:number]} - #{item.dig(:rule, :full_description)}" 
+      all_instances = okto_singleton.get item[:instances_url]
+      puts all_instances.first[:location]
+      all_instances_formatted = all_instances.map { |instance| "#{instance[:location][:path]}:#{instance[:location][:start_line]}" }.join(', ')
+
+      result << { id: item[:number], state: item[:state], url: item[:html_url], tool: item.dig(:tool,:name), severity: resolve_tool_severity(item), description: item.dig(:rule, :full_description), all_instances: all_instances_formatted }
+    end
+    # binding.pry
+    result
+  end
+
+  def resolve_tool_severity(item)
+    case item.dig(:tool, :name).downcase
+      when 'codeql'
+        item.dig(:rule, :security_severity_level)
+      else
+        # 'brakeman'  'bearer'
+        item.dig(:rule, :severity)
+    end
+  end
+
   def get_pr_for_sha(organization, repo, commits)
     Rails.logger.info 'Getting PRs for commits, this takes time'
     okto_singleton.auto_paginate = true
@@ -101,6 +131,17 @@ class GithubService
     end
     result
   end
+
+  def format_vulnerabilities_for_download(vulnerabilities)
+    Rails.logger.info 'Formatting vulnerabilities for download'
+    CSV.generate do |csv|
+      csv << ['ID', 'state', 'url', 'tool', 'severity', 'description','instances']
+      #      result << { id: item[:number], state: item[:state], url: item[:html_url], tool: item.dig(:tool,:name), severity: resolve_tool_severity(item), description: item.dig(:rule, :full_description)   }
+      vulnerabilities.each do |vuln|
+        csv << [vuln[:id], vuln[:state], vuln[:url], vuln[:tool], vuln[:severity], vuln[:description], vuln[:all_instances]]
+      end
+    end
+  end   
 
   def format_pr_set_for_download(organization, repo, prs, other_prs)
     Rails.logger.info 'Formatting PRs for download'
@@ -229,7 +270,7 @@ class GithubService
 
   class << self
     delegate :github_rate, :get_repos_for_select, :get_sha_between,
-             :get_pr_for_sha, :format_pr_set_for_download, :extract_auto_links,
-             :get_file_content_at_sha, to: :instance
+             :get_pr_for_sha, :format_pr_set_for_download, :format_vulnerabilities_for_download, :extract_auto_links,
+             :get_file_content_at_sha, :get_vulnerabilities, to: :instance
   end
 end

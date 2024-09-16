@@ -16,7 +16,13 @@ class CsvService
     csv_string = GithubService.format_pr_set_for_download(org, repo, prs, other_prs)
   end
 
+  def security_csv_for_project(org, repo)
+    vulnerabilities = GithubService.get_vulnerabilities(org,repo)
+    csv_string = GithubService.format_vulnerabilities_for_download(vulnerabilities)
+  end
+
   class << self
     delegate :csv_for_project, to: :instance
+    delegate :security_csv_for_project, to: :instance
   end
 end

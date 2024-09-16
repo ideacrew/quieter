@@ -4,6 +4,11 @@ Rails.application.routes.draw do
 
   get 'reports/range', as: 'range_report'
 
+  get 'reports/security', as: 'security_report'
+
+  post 'reports/execute_security_export', as: 'execute_security_export'
+
+
   resources :reports, only: [] do
     collection do
       get :repos

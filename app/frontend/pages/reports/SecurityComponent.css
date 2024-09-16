@@ -1,0 +1,21 @@
+.range-component-form input:not([type='submit']) {
+  display: block;
+  margin-bottom: 1em;
+  max-width: 30em;
+  width: 100%;
+  font-size: 12pt;
+}
+
+.range-component-form input[type='submit'] {
+  display: block;
+  padding: 0.5em;
+  font-size: 12pt;
+}
+
+.range-component-form select {
+  display: block;
+  margin-bottom: 1em;
+  max-width: 30em;
+  font-size: 12pt;
+  width: 100%;
+}
