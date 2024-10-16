@@ -43,7 +43,7 @@ class GithubService
       Rails.logger.info "Processing #{item[:number]} - #{item.dig(:rule, :full_description)}" 
       all_instances = okto_singleton.get item[:instances_url]
       puts all_instances.first[:location]
-      all_instances_formatted = all_instances.map { |instance| "#{instance[:location][:path]}:#{instance[:location][:start_line]}" }.join(', ')
+      all_instances_formatted = all_instances.map { |instance| "#{instance[:location][:path]}:#{instance[:location][:start_line]}" }.join(', \\n')
 
       result << { id: item[:number], state: item[:state], url: item[:html_url], tool: item.dig(:tool,:name), severity: resolve_tool_severity(item), description: item.dig(:rule, :full_description), all_instances: all_instances_formatted }
     end
@@ -136,9 +136,8 @@ class GithubService
     Rails.logger.info 'Formatting vulnerabilities for download'
     CSV.generate do |csv|
       csv << ['ID', 'state', 'url', 'tool', 'severity', 'description','instances']
-      #      result << { id: item[:number], state: item[:state], url: item[:html_url], tool: item.dig(:tool,:name), severity: resolve_tool_severity(item), description: item.dig(:rule, :full_description)   }
       vulnerabilities.each do |vuln|
-        csv << [vuln[:id], vuln[:state], vuln[:url], vuln[:tool], vuln[:severity], vuln[:description], vuln[:all_instances]]
+        csv << [vuln[:id], vuln[:state], vuln[:url], vuln[:tool], vuln[:severity], vuln[:description], '"' + vuln[:all_instances].to_s + '"']
       end
     end
   end   
